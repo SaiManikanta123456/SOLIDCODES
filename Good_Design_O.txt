@@ -1,0 +1,86 @@
+class Customer {
+    private String name;
+    private String type;
+
+    public Customer(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+}
+
+
+
+interface DiscountStrategy {
+    double apply(double amount);
+}
+
+
+class RegularDiscount implements DiscountStrategy {
+
+    public double apply(double amount) {
+        return amount * 0.1;
+    }
+}
+
+
+class PremiumDiscount implements DiscountStrategy {
+
+    public double apply(double amount) {
+        return amount * 0.2;
+    }
+}
+
+
+class DiscountService {
+
+    public double calculate(DiscountStrategy strategy, double amount) {
+        double discount = strategy.apply(amount);
+        return amount - discount;
+    }
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        double amount = 1000;
+
+        // Step 1: Create customer
+        Customer customer = new Customer("Sai", "PREMIUM");
+
+        // Step 2: Choose strategy at runtime
+        DiscountStrategy strategy;
+
+        if (customer.getType().equals("REGULAR")) {
+            strategy = new RegularDiscount();
+        } else {
+            strategy = new PremiumDiscount();
+        }
+
+        // Step 3: Call service
+        DiscountService service = new DiscountService();
+        double finalAmount = service.calculate(strategy, amount);
+
+        // Step 4: Output
+        System.out.println("Final amount after discount: " + finalAmount);
+    }
+}
+
+
+//Add new method in future
+
+class UltraPremiumDiscount implements DiscountStrategy {
+
+    public double apply(double amount) {
+        return amount * 0.3;
+    }
+}
+
+
+//use
+strategy = new UltraPremiumDiscount();

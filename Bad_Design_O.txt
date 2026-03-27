@@ -1,0 +1,11 @@
+class PaymentService {
+
+    public void pay(String type, double amount) {
+
+        if (type.equals("CREDIT")) {
+            System.out.println("Credit Card payment");
+        } else if (type.equals("UPI")) {
+            System.out.println("UPI payment");
+        }
+    }
+}
