@@ -1,0 +1,19 @@
+class OrderService {
+
+    public void placeOrder(Order order) {
+
+        // validation
+        if (order.getAmount() <= 0) {
+            throw new RuntimeException("Invalid amount");
+        }
+
+        // pricing
+        double finalAmount = order.getAmount();
+
+        // save
+        System.out.println("Saving order");
+
+        // logging
+        System.out.println("Order placed");
+    }
+}

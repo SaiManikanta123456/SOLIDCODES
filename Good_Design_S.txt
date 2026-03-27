@@ -1,0 +1,81 @@
+
+//Entity class
+class Order {
+    private String id;
+    private double amount;
+
+    public Order(String id, double amount) {
+        this.id = id;
+        this.amount = amount;
+    }
+
+    public String getId() { return id; }
+    public double getAmount() { return amount; }
+}
+
+
+class OrderValidator {
+
+    public void validate(Order order) {
+        if (order.getAmount() <= 0) {
+            throw new RuntimeException("Invalid order amount");
+        }
+        System.out.println("Order validated");
+    }
+}
+
+
+class PricingService {
+
+    public double calculate(Order order) {
+        return order.getAmount(); // simple for now
+    }
+}
+
+
+class OrderRepository {
+
+    public void save(Order order) {
+        System.out.println("Order saved: " + order.getId());
+    }
+}
+
+
+class LoggerService {
+
+    public void log(String message) {
+        System.out.println(message);
+    }
+}
+
+
+//Orchestrator
+class OrderService {
+
+    private OrderValidator validator = new OrderValidator();
+    private PricingService pricingService = new PricingService();
+    private OrderRepository repository = new OrderRepository();
+    private LoggerService logger = new LoggerService();
+
+    public void placeOrder(Order order) {
+
+        validator.validate(order);
+
+        double amount = pricingService.calculate(order);
+
+        repository.save(order);
+
+        logger.log("Order placed successfully with amount: " + amount);
+    }
+}
+
+//Entry Point
+public class Main {
+    public static void main(String[] args) {
+
+        Order order = new Order("ORD-1", 1000);
+
+        OrderService service = new OrderService();
+        service.placeOrder(order);
+    }
+}
