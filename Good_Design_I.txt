@@ -1,58 +1,73 @@
-interface Sendable {
-    void send(UserContact contact);
+interface User {
+    void viewContent();
 }
 
 
-interface Schedulable {
-    void schedule(UserContact contact, LocalDateTime time);
+interface DeletableUser extends User {
+    void deleteContent();
 }
 
 
-interface Retryable {
-    void retry(UserContact contact);
-}
+class AdminUser implements DeletableUser {
 
-
-class EmailNotification implements Sendable, Schedulable, Retryable {
-
-    public void send(UserContact contact) {
-        System.out.println("Sending Email to " + contact.getEmail());
+    public void viewContent() {
+        System.out.println("Admin viewing content");
     }
 
-    public void schedule(UserContact contact, LocalDateTime time) {
-        System.out.println("Scheduling Email at " + time);
-    }
-
-    public void retry(UserContact contact) {
-        System.out.println("Retrying Email...");
+    public void deleteContent() {
+        System.out.println("Admin deleting content");
     }
 }
 
 
-class SMSNotification implements Sendable, Retryable {
+class CustomerUser implements User {
 
-    public void send(UserContact contact) {
-        System.out.println("Sending SMS to " + contact.getMobile());
-    }
-
-    public void retry(UserContact contact) {
-        System.out.println("Retrying SMS...");
+    public void viewContent() {
+        System.out.println("Customer viewing content");
     }
 }
 
 
-class PushNotification implements Sendable {
+class GuestUser implements User {
 
-    public void send(UserContact contact) {
-        System.out.println("Sending Push Notification");
+    public void viewContent() {
+        System.out.println("Guest viewing content");
     }
 }
 
 
-class NotificationService {
+class ContentService {
 
-    public void sendNotification(Sendable notification, UserContact contact) {
-        notification.send(contact);
+    public void showContent(User user) {
+        user.viewContent();
+    }
+
+    public void deleteContent(DeletableUser user) {
+        user.deleteContent();
     }
 }
 
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        ContentService service = new ContentService();
+
+        User admin = new AdminUser();
+        User customer = new CustomerUser();
+        User guest = new GuestUser();
+
+        // All users can view → works fine
+        service.showContent(admin);
+        service.showContent(customer);
+        service.showContent(guest);
+
+        // Only deletable users allowed
+        DeletableUser deletable = new AdminUser();
+        service.deleteContent(deletable);
+
+        // ❌ Compile-time safety (VERY IMPORTANT)
+        // service.deleteContent(new GuestUser()); // not allowed
+    }
+}

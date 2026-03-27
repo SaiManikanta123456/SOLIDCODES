@@ -1,17 +1,28 @@
-interface Notification {
-    void send();
-    void schedule();
-    void retry();
+class User {
+
+    public void viewContent() {
+        System.out.println("Viewing content");
+    }
+
+    public void deleteContent() {
+        System.out.println("Deleting content");
+    }
 }
 
 
-👉 ❌ Issues:
+class GuestUser extends User {
 
-Every class is forced to implement all methods
-Some notifications:
-Don’t support scheduling
-Don’t need retry
-Leads to:
-UnsupportedOperationException
-Empty methods
-👉 🚨 ISP violation
+    @Override
+    public void deleteContent() {
+        throw new UnsupportedOperationException("Guest cannot delete");
+    }
+}
+
+
+public class Main {
+    public static void main(String[] args) {
+
+        User user = new GuestUser();
+        user.deleteContent(); // 💥 runtime failure
+    }
+}
