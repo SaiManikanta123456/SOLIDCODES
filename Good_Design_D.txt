@@ -1,0 +1,61 @@
+interface Payment {
+    void process(double amount);
+}
+
+
+class CreditCardPayment implements Payment {
+
+    @Override
+    public void process(double amount) {
+        System.out.println("Processing Credit Card payment of " + amount);
+    }
+}
+
+
+class UPIPayment implements Payment {
+
+    @Override
+    public void process(double amount) {
+        System.out.println("Processing UPI payment of " + amount);
+    }
+}
+
+
+class PayPalPayment implements Payment {
+
+    @Override
+    public void process(double amount) {
+        System.out.println("Processing PayPal payment of " + amount);
+    }
+}
+
+
+class PaymentService {
+
+    private Payment payment;
+
+    // Constructor Injection (BEST PRACTICE 🔥)
+    public PaymentService(Payment payment) {
+        this.payment = payment;
+    }
+
+    public void makePayment(double amount) {
+        payment.process(amount);
+    }
+}
+
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Payment payment = new CreditCardPayment(); // decide at runtime
+
+        PaymentService service = new PaymentService(payment);
+
+        service.makePayment(1000);
+    }
+}
+
+
+Payment payment = new UPIPayment();

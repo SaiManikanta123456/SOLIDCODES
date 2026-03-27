@@ -1,0 +1,16 @@
+class PaymentService {
+
+    private CreditCardPayment payment = new CreditCardPayment();
+
+    public void pay() {
+        payment.process();
+    }
+}
+
+
+👉 ❌ Issues:
+
+Tight coupling
+Cannot switch payment types
+Hard to test
+Violates DIP
