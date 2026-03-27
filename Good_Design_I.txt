@@ -1,0 +1,58 @@
+interface Sendable {
+    void send(UserContact contact);
+}
+
+
+interface Schedulable {
+    void schedule(UserContact contact, LocalDateTime time);
+}
+
+
+interface Retryable {
+    void retry(UserContact contact);
+}
+
+
+class EmailNotification implements Sendable, Schedulable, Retryable {
+
+    public void send(UserContact contact) {
+        System.out.println("Sending Email to " + contact.getEmail());
+    }
+
+    public void schedule(UserContact contact, LocalDateTime time) {
+        System.out.println("Scheduling Email at " + time);
+    }
+
+    public void retry(UserContact contact) {
+        System.out.println("Retrying Email...");
+    }
+}
+
+
+class SMSNotification implements Sendable, Retryable {
+
+    public void send(UserContact contact) {
+        System.out.println("Sending SMS to " + contact.getMobile());
+    }
+
+    public void retry(UserContact contact) {
+        System.out.println("Retrying SMS...");
+    }
+}
+
+
+class PushNotification implements Sendable {
+
+    public void send(UserContact contact) {
+        System.out.println("Sending Push Notification");
+    }
+}
+
+
+class NotificationService {
+
+    public void sendNotification(Sendable notification, UserContact contact) {
+        notification.send(contact);
+    }
+}
+

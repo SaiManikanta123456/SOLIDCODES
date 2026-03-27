@@ -1,0 +1,17 @@
+interface Notification {
+    void send();
+    void schedule();
+    void retry();
+}
+
+
+👉 ❌ Issues:
+
+Every class is forced to implement all methods
+Some notifications:
+Don’t support scheduling
+Don’t need retry
+Leads to:
+UnsupportedOperationException
+Empty methods
+👉 🚨 ISP violation
